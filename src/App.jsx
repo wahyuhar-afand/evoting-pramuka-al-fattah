@@ -348,7 +348,7 @@ function HomeView({ onLogin, onGoAdmin, settings, showToast }) {
           {/* Logo Tunas Kelapa (Pramuka) */}
           <div className="flex flex-col items-center">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Tunas_kelapa_pramuka.png"
+              src="https://lh3.googleusercontent.com/d/1H7ToRKPAKZCnwiUjteSFyCzRYJnYUIrn"
               alt="Logo Pramuka Tunas Kelapa"
               referrerPolicy="no-referrer"
               className="h-16 w-auto object-contain drop-shadow"
@@ -358,7 +358,7 @@ function HomeView({ onLogin, onGoAdmin, settings, showToast }) {
           {/* Logo WOSM (Pandu Dunia) */}
           <div className="flex flex-col items-center">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/3/3e/WOSM_emblem_2007.svg"
+              src="https://lh3.googleusercontent.com/d/1zNLWnrX9uocXtVGr3hpW4NcueqBAvhUf"
               alt="Logo WOSM Pandu Dunia"
               referrerPolicy="no-referrer"
               className="h-16 w-auto object-contain drop-shadow"
