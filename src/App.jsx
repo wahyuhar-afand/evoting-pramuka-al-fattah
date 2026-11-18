@@ -306,6 +306,21 @@ function HomeView({ onLogin, onGoAdmin, settings, showToast }) {
   const [gender, setGender] = useState('Laki-laki');
   const [isChecking, setIsChecking] = useState(false);
 
+  // Fungsi otomatis mendeteksi role berdasarkan awalan ID Pemilih
+  const handleVoterIdChange = (e) => {
+    const val = e.target.value;
+    setVoterId(val);
+
+    const prefix = val.trim().toUpperCase();
+    if (prefix.startsWith('A')) {
+      setRole('Anggota');
+    } else if (prefix.startsWith('B')) {
+      setRole('Dewan Penggalang');
+    } else if (prefix.startsWith('C')) {
+      setRole('Pembina');
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!voterId.trim()) {
@@ -332,9 +347,16 @@ function HomeView({ onLogin, onGoAdmin, settings, showToast }) {
     setIsChecking(false);
   };
 
+  // Teks keterangan role & bobot untuk kotak non-aktif
+  const getRoleDisplayLabel = () => {
+    if (role === 'Pembina') return 'Pembina';
+    if (role === 'Dewan Penggalang') return 'Dewan Penggalang';
+    return 'Anggota';
+  };
+
   return (
     <div className="max-w-2xl mx-auto pt-10 p-6 flex flex-col items-center">
-      {/* Logos Section */}
+      {/* Bagian Logo */}
       <div className="flex flex-col items-center gap-4 mb-6 w-full">
         <div className="flex justify-center">
           <img
@@ -345,7 +367,6 @@ function HomeView({ onLogin, onGoAdmin, settings, showToast }) {
           />
         </div>
         <div className="flex gap-8 justify-center items-center mt-2">
-          {/* Logo Tunas Kelapa (Pramuka) */}
           <div className="flex flex-col items-center">
             <img
               src="https://lh3.googleusercontent.com/d/1H7ToRKPAKZCnwiUjteSFyCzRYJnYUIrn"
@@ -353,9 +374,7 @@ function HomeView({ onLogin, onGoAdmin, settings, showToast }) {
               referrerPolicy="no-referrer"
               className="h-16 w-auto object-contain drop-shadow"
             />
-            <span className="text-[11px] font-bold text-gray-600 mt-1">Pramuka</span>
           </div>
-          {/* Logo WOSM (Pandu Dunia) */}
           <div className="flex flex-col items-center">
             <img
               src="https://lh3.googleusercontent.com/d/1zNLWnrX9uocXtVGr3hpW4NcueqBAvhUf"
@@ -363,7 +382,6 @@ function HomeView({ onLogin, onGoAdmin, settings, showToast }) {
               referrerPolicy="no-referrer"
               className="h-16 w-auto object-contain drop-shadow"
             />
-            <span className="text-[11px] font-bold text-gray-600 mt-1">WOSM</span>
           </div>
         </div>
       </div>
@@ -390,29 +408,26 @@ function HomeView({ onLogin, onGoAdmin, settings, showToast }) {
               type="text"
               required
               value={voterId}
-              onChange={(e) => setVoterId(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none uppercase"
-              placeholder="Contoh: PRAMUCA-001"
+              onChange={handleVoterIdChange}
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none uppercase font-mono tracking-wider"
+              placeholder="Contoh: A-0001, B-0003, C-0005"
             />
             <p className="text-xs text-gray-500 mt-1">
-              *ID memastikan pemilih tidak dapat memilih dua kali.
+              *Awalan <strong>A</strong> (Anggota), <strong>B</strong> (Dewan Penggalang), <strong>C</strong> (Pembina).
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">
-                Role / Jenis Pemilih
+                Role / Jenis Pemilih (Otomatis)
               </label>
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none bg-white"
-              >
-                <option value="Anggota">Anggota (Bobot Suara: 1)</option>
-                <option value="Dewan Penggalang">Dewan Penggalang (Bobot: 3)</option>
-                <option value="Pembina">Pembina (Bobot Suara: 5)</option>
-              </select>
+              <input
+                type="text"
+                disabled
+                value={getRoleDisplayLabel()}
+                className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-gray-100 text-gray-700 font-medium cursor-not-allowed text-sm"
+              />
             </div>
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">
@@ -423,8 +438,8 @@ function HomeView({ onLogin, onGoAdmin, settings, showToast }) {
                 onChange={(e) => setGender(e.target.value)}
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none bg-white"
               >
-                <option value="Laki-laki">Laki-laki (Pratama Putra)</option>
-                <option value="Perempuan">Perempuan (Pratama Putri)</option>
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
               </select>
             </div>
           </div>
